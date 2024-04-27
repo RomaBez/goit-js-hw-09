@@ -5,6 +5,7 @@
   |============================
 */
 @import url('./reset.css');
+@import url('./1-task.css');
 
 :root {
   font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
