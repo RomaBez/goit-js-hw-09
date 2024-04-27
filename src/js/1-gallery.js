@@ -85,7 +85,11 @@ images.forEach(image => {
     const img = document.createElement('img');
     img.classList.add('gallery-image');
     img.src = image.preview;
-    img.alt = image.description;
+  img.alt = image.description;
+  
+  galleryItem.appendChild(link);
+link.appendChild(img);
+gallery.appendChild(galleryItem);
 });
 
 new SimpleLightbox('.gallery a', {
