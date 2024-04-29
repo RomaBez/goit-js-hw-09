@@ -70,27 +70,20 @@ const images = [
 
 const gallery = document.querySelector('.gallery');
 
-images.forEach(image => {
-    const galleryItem = document.createElement('li');
-    galleryItem.classList.add('gallery-item');
+const markup = images.reduce((html, image) => {
+    return (html += `
+    <li class="gallery-item">
+  <a class="gallery-link" href="${image.original}">
+    <img
+      class="gallery-image"
+      src="${image.preview}"
+      alt="${image.description}"
+    />
+  </a>
+</li>`)
+}, '');
 
-    const link = document.createElement('a');
-    link.classList.add('gallery-link');
-    link.href = image.original;
-
-    link.addEventListener('click', event => {
-        event.preventDefault();
-    });
-
-    const img = document.createElement('img');
-    img.classList.add('gallery-image');
-    img.src = image.preview;
-  img.alt = image.description;
-  
-  galleryItem.appendChild(link);
-link.appendChild(img);
-gallery.appendChild(galleryItem);
-});
+gallery.insertAdjacentHTML('beforeend', markup);
 
 new SimpleLightbox('.gallery a', {
     captionsData: 'alt',
