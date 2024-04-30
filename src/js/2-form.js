@@ -1,49 +1,38 @@
 const formData = {
-    email: "",
-    message: ""
+  email: "",
+  message: ""
 };
 
-const formRefs = {
-  form: document.querySelector('.feedback-form'),
-  input: document.querySelector('input[type="email"]'),
-  message: document.querySelector('textarea'),
-};
+const formRefs = document.querySelector(".feedback-form");
 
-
-function onFormSubmit (event) {
-    event.preventDefault();
-    if (formData.email === '' || formData.message === '') {
-    return alert('Fill please all fields');
-    }
-    console.log(formData);
-    event.currentTarget.reset();
-    localStorage.removeItem('feedback-form-state');
-};
-
-
-function onFormInput(event) {
-  formData[event.target.name] = event.target.value;
-  console.log(formData);
-};
-
-
-formRefs.form.addEventListener('submit', onFormSubmit);
-formRefs.form.addEventListener('input', onFormInput);
-formRefs.message.addEventListener('input', onTextareaInput);
-
-function onTextareaInput(event) {
-    formData.message = event.target.value;
-    console.log(formData);
-  localStorage.setItem('feedback-form-state', event.target.value);
-};
-
-function populateTextareaField() {
-  const messageText = localStorage.getItem('feedback-form-state');
-  console.log(messageText);
-    if (messageText) {
-        formData.message = messageText;
-        formRefs.message.value = messageText;
-    }
+const savedLocalFormKeys = localStorage.getItem('feedback-form-state');
+  if (savedLocalFormKeys) {
+    formRefs.elements.email.value = savedLocalFormKeys.email;
+    formRefs.elements.message.value = savedLocalFormKeys.message;
 }
 
-populateTextareaField();
+formRefs.addEventListener("submit", onSubmitForm)
+
+  function onSubmitForm (event) {
+  event.preventDefault();
+// const email = savedLocalFormKeys ? savedLocalFormKeys.email : formData.email;
+// const message = savedLocalFormKeys ? savedLocalFormKeys.message : formData.message;
+const { email, message } = savedLocalFormKeys || formData;
+    if ( email === "" || message === "") {
+      alert("Fill please all fields");
+      return; 
+    }
+    localStorage.removeItem('feedback-form-state');
+    formRefs.elements.email.value = "";
+    formRefs.elements.message.value = "";
+    event.currentTarget.reset();
+    console.log(formData);
+ };
+
+formRefs.addEventListener("input", onInputForm);
+
+function onInputForm() {
+    formData.email = formRefs.elements.email.value.trim();
+    formData.message = formRefs.elements.message.value.trim();
+    localStorage.setItem('feedback-form-state', JSON.stringify(formData));
+};
